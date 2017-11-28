@@ -4,5 +4,4 @@ jspm_packages/
 .idea/*
 _site/
 typings/
-dist/
 *.log
