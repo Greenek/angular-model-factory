@@ -254,7 +254,7 @@ module.provider('$modelFactory', function(){
         list: {}
     };
 
-    provider.$get = ['$rootScope', '$http', '$q', '$log', '$cacheFactory', function($rootScope, $http, $q, $log, $cacheFactory) {
+    provider.$get = ['$http', '$q', '$log', '$cacheFactory', function($http, $q, $log, $cacheFactory) {
 
         /**
          * Model factory.
@@ -272,13 +272,6 @@ module.provider('$modelFactory', function(){
              *
              */
             var promiseTracker = {};
-
-            /**
-             * Make a pretty name from the url
-             * for the event emitters
-             */
-            var nameSplit = url.split('/'),
-                prettyName = nameSplit[nameSplit.length - 1];
 
             // copy so we also extend our defaults and not override
             //var actions = angular.extend({}, defaultOptions.actions, options.actions);
@@ -436,9 +429,6 @@ module.provider('$modelFactory', function(){
                             instance.$update(value);
                         }
 
-                        var broadcastName = actionType === 'post' ? 'created' : 'updated';
-                        $rootScope.$broadcast(prettyName + '-' + broadcastName, instance);
-
                         // commit the change for reversion
                         commits.push(angular.toJson(instance));
                     }, function () {
@@ -469,8 +459,6 @@ module.provider('$modelFactory', function(){
                         if(arr){
                             arr.splice(arr.indexOf(instance), 1);
                         }
-
-                        $rootScope.$broadcast(prettyName + '-destroyed', instance);
                     }, function(){
                         // rejected
                         instance.$pending = false;
