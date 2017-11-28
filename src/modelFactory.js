@@ -282,6 +282,20 @@ module.provider('$modelFactory', function(){
             // ------------------------------------------------------------
             //
 
+            // helper function for creating a new instance of a model from
+            // a raw JavaScript obj. If it is already a model, it will be left
+            // as it is
+            var  wrapAsNewModelInstance = function(rawObj, arrayInst){
+                // create an instance
+                var inst = rawObj.constructor === Model ?
+                    rawObj : new Model(rawObj);
+
+                // set a pointer to the array
+                inst.$$array = arrayInst;
+
+                return inst;
+            };
+
             /**
              * Model list instance.
              * All raw objects passed will be converted to an instance of this model.
@@ -324,20 +338,6 @@ module.provider('$modelFactory', function(){
                 }
 
                 return value;
-            };
-
-            // helper function for creating a new instance of a model from
-            // a raw JavaScript obj. If it is already a model, it will be left
-            // as it is
-            var  wrapAsNewModelInstance = function(rawObj, arrayInst){
-                // create an instance
-                var inst = rawObj.constructor === Model ?
-                    rawObj : new Model(rawObj);
-
-                // set a pointer to the array
-                inst.$$array = arrayInst;
-
-                return inst;
             };
 
             // ES5, IE compatible version to retrieve the name of a function. ES6
@@ -421,12 +421,12 @@ module.provider('$modelFactory', function(){
 
                     instance.$pending = true;
 
-                    promise.then(function(value){
+                    promise.then(function(response){
                         instance.$pending = false;
 
                         // extend the value from the server to me
-                        if (value) {
-                            instance.$update(value);
+                        if (response) {
+                            instance.$update(response);
                         }
 
                         // commit the change for reversion
