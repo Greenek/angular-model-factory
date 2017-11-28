@@ -1075,7 +1075,7 @@ describe('A person model defined using modelFactory', function() {
                 .then(function(){
                     // this should never be executed
                     expect(false).toBeTruthy();
-                });
+                }, function() {});
 
             $httpBackend.expectGET('/api/people').respond(500);
             $httpBackend.flush();
