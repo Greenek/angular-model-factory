@@ -46,7 +46,7 @@ module.exports = function(grunt) {
                 'src/**/*.js'
               ],
               'dist/<%= pkg.name %>-bundle.js': [
-                'bower_components/deep-diff/releases/deep-diff-0.2.0.min.js',
+                'bower_components/deep-diff/releases/deep-diff-<%= pkg.dependencies["deep-diff"] %>.min.js',
                 'bower_components/uri-templates/uri-templates.js',
                 'src/**/*.js'
               ]
